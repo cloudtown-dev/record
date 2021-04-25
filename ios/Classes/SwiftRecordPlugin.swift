@@ -135,7 +135,6 @@ public class SwiftRecordPlugin: NSObject, FlutterPlugin, AVAudioRecorderDelegate
       try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: options)
       try AVAudioSession.sharedInstance().setActive(true)
     } catch {
-        result(FlutterError(code: "", message: "Failed to change audio back", details: nil))
     }
 
     audioRecorder?.stop()
