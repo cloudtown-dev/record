@@ -76,7 +76,7 @@ public class SwiftRecordPlugin: NSObject, FlutterPlugin, AVAudioRecorderDelegate
     result(hasPermission)
   }
 
-  fileprivate func start(path: String, encoder: Int, bitRate: Int, samplingRate: Float, result: @escaping FlutterResult) {
+  fileprivate func start(path: String, encoder: Int, bitRate: Int, samplingRate: Float, result: @escaping FlutterResult, enableBluetooth: Bool) {
     stopRecording()
 
     let settings = [
@@ -87,7 +87,7 @@ public class SwiftRecordPlugin: NSObject, FlutterPlugin, AVAudioRecorderDelegate
       AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
     ] as [String : Any]
 
-    let options: AVAudioSession.CategoryOptions = [.defaultToSpeaker, .allowBluetooth]
+    let options: AVAudioSession.CategoryOptions = [.defaultToSpeaker]
 
     do {
       try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: options)
@@ -127,6 +127,14 @@ public class SwiftRecordPlugin: NSObject, FlutterPlugin, AVAudioRecorderDelegate
   }
 
   fileprivate func stopRecording() {
+    
+    let options: AVAudioSession.CategoryOptions = [.defaultToSpeaker, .allowBluetooth]
+
+    do {
+      try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord, options: options)
+      try AVAudioSession.sharedInstance().setActive(true)
+    }
+
     audioRecorder?.stop()
     audioRecorder = nil
     isRecording = false
